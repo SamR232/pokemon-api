@@ -26,6 +26,12 @@ const getGenerationOne = async () => {
 	return res;
 };
 
+const colorMap = {
+	grass: 'bg-green-600',
+	fire: 'bg-red-600',
+	water: 'bg-blue-600',
+};
+
 const App = () => {
 	const [pokemon, setPokemon] = useState([]);
 
@@ -44,31 +50,68 @@ const App = () => {
 
 	return (
 		<div>
-			<h1 className='text-2xl text-red-700'>Pokedex</h1>
+			<h1 className='text-4xl text-center underline tracking-widest mb-8'>
+				Pokedex
+			</h1>
 
 			<div>
 				<table>
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Types</th>
-							<th>Image</th>
+							<th className='bg-slate-200'>Name</th>
+							<th className='bg-slate-200'>Types</th>
+							<th className='bg-slate-200'>Image</th>
+							<th className='bg-slate-200'>Abilities</th>
+							<th className='bg-slate-200'>Moves</th>
+							<th className='bg-slate-200'>Stats</th>
 						</tr>
 					</thead>
 					<tbody>
 						{pokemon.map((currPokemon) => {
+							const firstType = currPokemon.types[0].type.name;
+							const rowColor =
+								firstType in colorMap ? colorMap[firstType] : 'bg-white.200';
+
 							return (
-								<tr>
-									<td>{currPokemon.name}</td>
-									<td>
+								<tr className={`${rowColor} border-b-2 border-black`}>
+									<td className='px-4 border-r-4 border-black uppercase'>
+										{currPokemon.name}
+									</td>
+									<td className={`px-4 border-r-4 border-black capitalize`}>
 										{currPokemon.types
-											.map((type) => {
-												return type.type.name;
+											.map(({ type }) => {
+												return type.name;
 											})
 											.join(', ')}{' '}
 									</td>
-									<td>
-										<img src={currPokemon.sprites.front_default}></img>
+									<td className='w-64 border-r-4 border-black'>
+										<img
+											src={currPokemon.sprites.front_default}
+											alt={currPokemon.name}
+											className='w-64'
+										/>
+									</td>
+									<td className='px-4 border-r-4 border-black bg-'>
+										{currPokemon.abilities
+											.map(({ ability }) => {
+												return ability.name;
+											})
+											.join(', ')}
+									</td>
+									<td className='px-4 border-r-4 border-black'>
+										{currPokemon.moves
+											.map(({ move }) => {
+												return move.name;
+											})
+											.slice(0, 4)
+											.join(', ')}
+									</td>
+									<td className='px-4 border-r-4 border-black'>
+										{currPokemon.stats
+											.map((stat) => {
+												return stat.stat.name + ': ' + stat.base_stat;
+											})
+											.join(', ')}
 									</td>
 								</tr>
 							);
