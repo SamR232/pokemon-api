@@ -42,7 +42,7 @@ const App = () => {
 
 	return (
 		<div>
-			<h1>Pokedex</h1>
+			<h1 className="text-2xl align-middle">Pokedex</h1>
 
 			<div>
 				<table>
@@ -51,6 +51,9 @@ const App = () => {
 						<th>Name</th>
 						<th>Types</th>
 						<th>Image</th>
+						<th>Abilities</th>
+						<th>Moves</th>
+						<th>Stats</th>
 					</tr>
 					</thead>
 					<tbody>
@@ -58,11 +61,21 @@ const App = () => {
 							return (
 							<tr>
 							<td>{currPokemon.name}</td>
-							<td>{currPokemon.types.map((type)=>{
-								return type.type.name
+							<td>{currPokemon.types.map(({type})=>{
+								return type.name
 							}).join(', ')
 							} </td>
 							<td><img src={currPokemon.sprites.front_default}></img></td>
+							<td>{currPokemon.abilities.map(({ability})=>{
+								return ability.name
+							}).join(', ')}</td>
+							<td>{currPokemon.moves.map(({move})=>{
+								return move.name
+							}).join(', ')}</td>
+							<td>{currPokemon.stats.map((stat)=>{
+								return stat.name
+							})}</td>
+							
 							</tr>
 							)
 						})}
