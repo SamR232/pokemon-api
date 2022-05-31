@@ -79,7 +79,9 @@ const App = () => {
 								firstType in colorMap ? colorMap[firstType] : 'bg-white.200';
 
 							return (
-								<tr className={`${rowColor} border-b-2 border-black`}>
+								<tr
+									className={`${rowColor} border-b-2 border-black hover:bg-white transition duration-200`}
+								>
 									<td className='px-4 border-r-4 border-black uppercase'>
 										{currPokemon.name}
 									</td>
