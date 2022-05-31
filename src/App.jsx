@@ -30,6 +30,7 @@ const colorMap = {
 	grass: 'bg-green-600',
 	fire: 'bg-red-600',
 	water: 'bg-blue-600',
+	electric: 'bg-yellow-600',
 };
 
 const App = () => {
