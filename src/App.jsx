@@ -31,6 +31,11 @@ const colorMap = {
 	fire: 'bg-red-600',
 	water: 'bg-blue-600',
 	electric: 'bg-yellow-600',
+	poison: 'bg-purple-600',
+	Flying: 'bg-slate-600',
+	bug: 'bg-green-200',
+	ground: 'bg-amber-700',
+	rock: 'bg-stone-600',
 };
 
 const App = () => {
