@@ -1,40 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import PokeReq from './Wrapper';
 
-const getGenerationOne = async () => {
-	const res = await PokeReq.getGenerationByName(1);
-
-	const results = await res.pokemon_species.map((item) => {
-		return getIndividuaLPokemon(item.name);
-	});
-};
-
+// declare function to be used in getGenerationOne func
 const getIndividuaLPokemon = async (name) => {
-	const res = PokeReq.getPokemonByName(name);
-
-	console.log('*', res);
+	const individualPokemonData = await PokeReq.getPokemonByName(name);
+	return individualPokemonData;
 };
+
+// gets array of pokemon names then maps over them returning array of pokemon data, per index
+const getGenerationOne = async () => {
+	const genOnePokemon = await PokeReq.getGenerationByName(1);
+
+	const names = genOnePokemon.pokemon_species.map((pokemon)=>{
+		return pokemon.name
+	})
+
+	const res = await Promise.all(names.map((name)=>{
+		return getIndividuaLPokemon(name)
+	}))
+
+	return res;
+};
+
 
 const App = () => {
 	const [pokemon, setPokemon] = useState([]);
 
 	useEffect(() => {
-		const generationResponse = getGenerationOne();
+		async function fetchGenerationOne() {
+			const generationResponse = await getGenerationOne();
+			setPokemon(generationResponse);
+		}
 
-		setPokemon(generationResponse);
+		fetchGenerationOne()
+
 	}, []);
+	
+	useEffect(()=>{
+		console.log(pokemon, 'pokemon');
+	}, [pokemon])
 
 	return (
 		<div>
-			<h1>App</h1>
+			<h1>Pokedex</h1>
 
 			<div>
-				<ul>
-					{pokemon &&
-						pokemon.map((currentPokemon) => {
-							return <li>{currentPokemon}</li>;
+				<table>
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Types</th>
+						<th>Image</th>
+					</tr>
+					</thead>
+					<tbody>
+					{pokemon.map((currPokemon) => {
+							return (
+							<tr>
+							<td>{currPokemon.name}</td>
+							<td>{currPokemon.types.map((type)=>{
+								return type.type.name
+							}).join(', ')
+							} </td>
+							<td><img src={currPokemon.sprites.front_default}></img></td>
+							</tr>
+							)
 						})}
-				</ul>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	);
